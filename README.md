@@ -1,2 +1,3 @@
-# springbootdemo
-一个集成Beetlsql和Swagger UI能够下载excel的demo
+启动项目完成后，在浏览器中输入 http://localhost:8080/swagger-ui.html
+
+即可到达 swagger页面
