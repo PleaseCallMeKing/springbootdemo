@@ -106,25 +106,45 @@ public class UserController {
         List<List<String>> head = new ArrayList<List<String>>();
         List<String> headCoulumn1 = new ArrayList<String>();
         List<String> headCoulumn2 = new ArrayList<String>();
-        headCoulumn1.add("第一列");
-        headCoulumn2.add("第二列");
+        List<String> headCoulumn3 = new ArrayList<String>();
+        List<String> headCoulumn4 = new ArrayList<String>();
+        headCoulumn1.add("id");
+        headCoulumn2.add("name");
+        headCoulumn3.add("age");
+        headCoulumn4.add("create_date");
         head.add(headCoulumn1);
         head.add(headCoulumn2);
+        head.add(headCoulumn3);
+        head.add(headCoulumn4);
         Table table = new Table(1);
         table.setHead(head);
         sheet.setSheetName("下载数据");
 
-        //获取数据
-        PageQuery query = new PageQuery();
-        UserController.getSqlManager().pageQuery("user.queryNewUser", User.class,query);
-        List<User> list = query.getList();
 
-        writer.write(list, sheet, table);
+        writer.write0(getListString(), sheet, table);
         writer.finish();
         out.flush();
 
 
         return "index";
+    }
+
+    private List<List<String>> getListString() {
+        //获取数据
+        PageQuery query = new PageQuery();
+        UserController.getSqlManager().pageQuery("user.queryNewUser", User.class,query);
+        List<User> list = query.getList();
+
+        List<List<String>> result = new ArrayList<>();
+        list.forEach(item -> {
+            List<String> temp = new ArrayList<>();
+            temp.add(item.getId().toString());
+            temp.add(item.getName());
+            temp.add(item.getAge() == null ? "": item.getAge().toString());
+            temp.add(item.getCreateDate() == null? "": item.getCreateDate().toString());
+            result.add(temp);
+        });
+        return result;
     }
 
 }
